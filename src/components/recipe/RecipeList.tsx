@@ -1,8 +1,9 @@
 
 import { Recipe } from "@/types/recipe";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Star, BookOpen } from "lucide-react";
+import { Clock, Star, BookOpen, BookmarkCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useSavedRecipes } from "@/context/SavedRecipesContext";
 
 interface RecipeListProps {
   recipes: Recipe[];
@@ -10,6 +11,7 @@ interface RecipeListProps {
 
 const RecipeList = ({ recipes }: RecipeListProps) => {
   const navigate = useNavigate();
+  const { isSaved } = useSavedRecipes();
 
   const getAverageRating = (ratings: number[]) => {
     if (ratings.length === 0) return "0.0";
@@ -32,12 +34,17 @@ const RecipeList = ({ recipes }: RecipeListProps) => {
             className="recipe-card bg-forest-light border border-mint/10 hover:border-mint/40 transition-all cursor-pointer overflow-hidden shadow-lg"
             onClick={() => navigate(`/recipe/${recipe.id}`)}
           >
-            <div className="h-52 overflow-hidden">
+            <div className="h-52 overflow-hidden relative">
               <img 
                 src={recipe.imageUrl} 
                 alt={recipe.name} 
                 className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
               />
+              {isSaved(recipe.id) && (
+                <div className="absolute top-2 right-2 bg-forest-light/80 p-1 rounded-full">
+                  <BookmarkCheck className="h-5 w-5 text-mint fill-mint" />
+                </div>
+              )}
             </div>
             <CardContent className="p-6">
               <div className="flex justify-between items-start">

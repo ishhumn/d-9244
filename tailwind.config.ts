@@ -21,14 +21,14 @@ export default {
     extend: {
       colors: {
         forest: {
-          DEFAULT: "#2D3047", // Updated main background color
-          light: "#485063", // Updated lighter variant
+          DEFAULT: "#1F2937", // Updated darker blue-gray
+          light: "#374151", // Updated lighter variant
         },
         mint: {
-          DEFAULT: "#E8C1C5", // Updated primary accent color (soft pink)
+          DEFAULT: "#F59E0B", // Updated to amber/gold
         },
         divine: {
-          DEFAULT: "#F4D06F", // Updated secondary accent (gold)
+          DEFAULT: "#10B981", // Updated to emerald green
         }
       },
       fontFamily: {

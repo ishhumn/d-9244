@@ -6,19 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, Clock, Star as StarIcon, UserCircle } from "lucide-react";
+import { ChevronLeft, Clock, Star as StarIcon, UserCircle, BookmarkPlus, BookmarkCheck } from "lucide-react";
 import { Comment } from "@/types/recipe";
+import { useSavedRecipes } from "@/context/SavedRecipesContext";
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const recipe = mockRecipes.find(r => r.id === id);
+  const { saveRecipe, removeSavedRecipe, isSaved } = useSavedRecipes();
   
   const [comment, setComment] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comments, setComments] = useState<Comment[]>(recipe?.comments || []);
+  const [saveAnimation, setSaveAnimation] = useState(false);
 
   if (!recipe) {
     return (
@@ -26,7 +29,7 @@ const RecipeDetail = () => {
         <h2 className="text-2xl font-bold text-white mb-4 font-display">Recipe not found</h2>
         <Button 
           onClick={() => navigate("/")}
-          className="bg-mint hover:bg-mint/90 text-forest"
+          className="bg-mint hover:bg-mint/90 text-forest-light"
         >
           <ChevronLeft className="mr-2 h-4 w-4" /> Back to Recipes
         </Button>
@@ -63,6 +66,16 @@ const RecipeDetail = () => {
     setRating(0);
   };
 
+  const handleSaveRecipe = () => {
+    if (isSaved(recipe.id)) {
+      removeSavedRecipe(recipe.id);
+    } else {
+      saveRecipe(recipe.id);
+      setSaveAnimation(true);
+      setTimeout(() => setSaveAnimation(false), 500);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <Button 
@@ -70,7 +83,7 @@ const RecipeDetail = () => {
         variant="outline"
         className="mb-8 border-mint/20 text-mint hover:bg-mint/10"
       >
-        <ChevronLeft className="mr-2 h-4 w-4" /> Back to Discoveries
+        <ChevronLeft className="mr-2 h-4 w-4" /> Back to Explorations
       </Button>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -84,31 +97,42 @@ const RecipeDetail = () => {
           </div>
 
           <div className="space-y-8">
-            <div>
+            <div className="flex justify-between items-start">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 font-display">{recipe.name}</h1>
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="bg-mint/15 text-mint text-sm px-3 py-1 rounded-full">
-                  {recipe.category}
-                </span>
-                <div className="flex items-center text-white/70">
-                  <Clock className="h-4 w-4 mr-1" />
-                  <span>{recipe.prepTimeMinutes} min</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="flex">
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <StarIcon 
-                        key={star}
-                        className={`h-4 w-4 ${parseFloat(getAverageRating()) >= star ? 'text-mint fill-mint' : 'text-white/30'}`}
-                      />
-                    ))}
-                  </div>
-                  <span className="ml-2 text-white">({recipe.ratings.length})</span>
-                </div>
-                <span className="text-white/70 text-sm">
-                  Difficulty: <span className="font-medium">{recipe.difficulty}</span>
-                </span>
+              <Button 
+                onClick={handleSaveRecipe}
+                variant="ghost" 
+                className={`text-mint hover:bg-mint/10 ${saveAnimation ? 'saved-animation' : ''}`}
+              >
+                {isSaved(recipe.id) ? (
+                  <BookmarkCheck className="h-6 w-6 fill-mint" />
+                ) : (
+                  <BookmarkPlus className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="bg-mint/15 text-mint text-sm px-3 py-1 rounded-full">
+                {recipe.category}
+              </span>
+              <div className="flex items-center text-white/70">
+                <Clock className="h-4 w-4 mr-1" />
+                <span>{recipe.prepTimeMinutes} min</span>
               </div>
+              <div className="flex items-center">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <StarIcon 
+                      key={star}
+                      className={`h-4 w-4 ${parseFloat(getAverageRating()) >= star ? 'text-mint fill-mint' : 'text-white/30'}`}
+                    />
+                  ))}
+                </div>
+                <span className="ml-2 text-white">({recipe.ratings.length})</span>
+              </div>
+              <span className="text-white/70 text-sm">
+                Difficulty: <span className="font-medium">{recipe.difficulty}</span>
+              </span>
             </div>
 
             <div>
@@ -188,7 +212,7 @@ const RecipeDetail = () => {
                 </div>
                 <Button 
                   onClick={handleSubmitComment}
-                  className="w-full bg-mint hover:bg-mint/90 text-forest font-medium"
+                  className="w-full bg-mint hover:bg-mint/90 text-forest-light font-medium"
                   disabled={!comment.trim() || !authorName.trim() || rating === 0}
                 >
                   Submit Review

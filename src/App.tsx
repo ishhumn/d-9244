@@ -7,21 +7,26 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import RecipeDetail from "./pages/RecipeDetail";
 import SubmitRecipe from "./pages/SubmitRecipe";
+import SavedRecipes from "./pages/SavedRecipes";
+import { SavedRecipesProvider } from "./context/SavedRecipesContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/recipe/:id" element={<RecipeDetail />} />
-          <Route path="/submit-recipe" element={<SubmitRecipe />} />
-        </Routes>
-      </BrowserRouter>
+      <SavedRecipesProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/recipe/:id" element={<RecipeDetail />} />
+            <Route path="/submit-recipe" element={<SubmitRecipe />} />
+            <Route path="/saved-recipes" element={<SavedRecipes />} />
+          </Routes>
+        </BrowserRouter>
+      </SavedRecipesProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
