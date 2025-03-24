@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,18 +21,19 @@ export default {
     extend: {
       colors: {
         forest: {
-          DEFAULT: "#0A1F2F", // Main background color
-          light: "#132B41", // Slightly lighter variant for cards/sections
+          DEFAULT: "#2D3047", // Updated main background color
+          light: "#485063", // Updated lighter variant
         },
         mint: {
-          DEFAULT: "#64FFDA", // Primary accent color
+          DEFAULT: "#E8C1C5", // Updated primary accent color (soft pink)
         },
         divine: {
-          DEFAULT: "#FFD700", // Secondary accent color
+          DEFAULT: "#F4D06F", // Updated secondary accent (gold)
         }
       },
       fontFamily: {
-        sans: ["Inter var", "system-ui", "sans-serif"],
+        sans: ["Poppins", "system-ui", "sans-serif"],
+        display: ["Playfair Display", "serif"],
       },
     },
   },

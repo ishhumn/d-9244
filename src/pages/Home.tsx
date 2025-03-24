@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import RecipeList from "@/components/recipe/RecipeList";
 import SearchFilters from "@/components/recipe/SearchFilters";
-import { ChefHat, Plus } from "lucide-react";
+import { BookOpen, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Recipe, FilterOptions } from "@/types/recipe";
 import { mockRecipes } from "@/data/mockRecipes";
@@ -71,20 +71,20 @@ const Home = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <div className="mb-4 md:mb-0">
-          <h1 className="text-3xl md:text-4xl font-bold flex items-center text-white">
-            <ChefHat className="mr-2 h-8 w-8 text-mint" />
-            TastyHome
+    <div className="container mx-auto px-4 py-12">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+        <div className="mb-6 md:mb-0">
+          <h1 className="text-3xl md:text-5xl font-bold flex items-center text-white font-display">
+            <BookOpen className="mr-3 h-8 w-8 text-mint" />
+            FlavorFusion
           </h1>
-          <p className="text-white/80 mt-2">Discover and share delicious homemade recipes</p>
+          <p className="text-white/80 mt-3 text-lg">Embark on a global culinary journey from your kitchen</p>
         </div>
         <Button 
           onClick={() => navigate("/submit-recipe")}
           className="bg-mint hover:bg-mint/90 text-forest font-medium px-6 py-2"
         >
-          <Plus className="mr-2 h-4 w-4" /> Submit Recipe
+          <Plus className="mr-2 h-4 w-4" /> Add Your Creation
         </Button>
       </div>
       
